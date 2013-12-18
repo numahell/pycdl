@@ -12,7 +12,7 @@ def get_time_from_epoch(epoch):
 
 
 days = ['23','24']
-scheduleurl = "http://localhost:8000/files/capitole-du-libre-schedule.json"
+scheduleurl = "http://localhost:8000/files/francejs-schedule.json"
 donnee = JizonSchedule(scheduleurl, days)
 print "retrieving information ..."
 donnee.retrieveData()
@@ -45,6 +45,8 @@ for w in conferences:
     end = get_time_from_epoch(w['end_time_epoch'])
     wid = putils.slugify(w['title'])
     space = w['space']
+    #~ theme = THEMES[w['space']]
+    theme = "france-js"
     abstract = w['abstract']
     speakers = ""
     if w.has_key('speakers'):
@@ -57,9 +59,9 @@ for w in conferences:
                         title, 
                         rstheading, 
                         u"",
-                        u""":url: conferences/%s.html""" % wid,
-                        u""":save_as: conferences/%s.html""" % wid,
-                        u""":video_url: %s/%s""" % (VIDEO_URLBASE, THEMES[w['space']]),
+                        u""":url: conferences/%s/%s.html""" % (theme, wid),
+                        u""":save_as: conferences/%s/%s.html""" % (theme, wid),
+                        u""":video_url: %s/%s""" % (VIDEO_URLBASE, theme),
                         u""":speakers: %s""" % speakers,
                         u":template: conference",
                         u"",
@@ -70,8 +72,8 @@ for w in conferences:
                         u"",
                         ])
 
-    #~ f = open(file_name, 'w')
-    #~ f.write(output.encode('utf8'))
-    #~ f.close()
+    f = open(file_name, 'w')
+    f.write(output.encode('utf8'))
+    f.close()
 
     print '%s file written' % file_name
