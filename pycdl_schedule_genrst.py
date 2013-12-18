@@ -17,6 +17,16 @@ donnee = JizonSchedule(scheduleurl, days)
 print "retrieving information ..."
 donnee.retrieveData()
 BASEDIR = "/home/numahell/Dev/pelican/capitoledulibre-site/src/pages/schedule"
+VIDEO_URLBASE = "http://toulibre.org/pub/2013-11-23-capitole-du-libre/videos"
+THEMES = {
+    "A001": u"grand-public",
+    "A002": u"multimedia-bureautique",
+    "A201": u"Technique",
+    "A202": u"france-js",
+    "A203": u"multimedia-bureautique",
+    "C002": u"internet-libre",
+    "C103": u"akademy-fr",
+}
 
 try:
     os.mkdir(BASEDIR)
@@ -27,7 +37,7 @@ os.chdir(BASEDIR)
 conferences = donnee.getConferences()
 
 
-for w in conferences[0:3]:
+for w in conferences:
     
     title = w['title']
     rstheading = u"="*len(title)
@@ -37,6 +47,9 @@ for w in conferences[0:3]:
     space = w['space']
     abstract = w['abstract']
     speakers = ""
+    if w.has_key('speakers'):
+        speakers_names = [s['name'] for s in w['speakers']]
+        speakers = ', '.join(speakers_names)
     
     file_name = "%s.rst" % wid
     
@@ -44,7 +57,11 @@ for w in conferences[0:3]:
                         title, 
                         rstheading, 
                         u"",
-                        u""":space: %s""" % space,
+                        u""":url: conferences/%s.html""" % wid,
+                        u""":save_as: conferences/%s.html""" % wid,
+                        u""":video_url: %s/%s""" % (VIDEO_URLBASE, THEMES[w['space']]),
+                        u""":speakers: %s""" % speakers,
+                        u":template: conference",
                         u"",
                         u""".. html::""",
                         u"",
@@ -53,8 +70,8 @@ for w in conferences[0:3]:
                         u"",
                         ])
 
-    f = open(file_name, 'w')
-    f.write(output.encode('utf8'))
-    f.close()
+    #~ f = open(file_name, 'w')
+    #~ f.write(output.encode('utf8'))
+    #~ f.close()
 
     print '%s file written' % file_name
