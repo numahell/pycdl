@@ -20,7 +20,6 @@ THEMES = {
     "A001": u"grand-public",
     "A002": u"multimedia-bureautique",
     "A201": u"technique",
-    "A202": u"francejs",
     "A203": u"multimedia-bureautique",
     "C002": u"internet-libre",
     "C103": u"akademy-fr",
@@ -110,15 +109,18 @@ def gen_rst_lists(scheduleurl):
 
     for theme in themes.values():
         
-        rstheading = u"="*len(theme)
+        title = u"Conférences %s" % theme
+        rstheading = u"="*len(title)
         output = "\n".join([rstheading,
-                            theme,
+                            title,
                             rstheading,
                             u"",
                             u":url: conferences/%s/" % theme,
                             u":save_as: conferences/%s/index.html" % theme,
                             u":template: conferences"
                             u"",
+                            u"",
+                            u"Retrouvez les vidéos des conférences.",
                             u"",
                             conferences_list[theme],
                             ])
@@ -135,11 +137,11 @@ def gen_rst_lists(scheduleurl):
         f.write(output.encode('utf8'))
         f.close()
 
-        print '%s file written' % file_name
+        print '%s/%s file written' % (theme, file_name)
 
 def main():
 	
-	#~ gen_rst_lists(scheduleurl_cdl)
+	gen_rst_lists(scheduleurl_cdl)
 
 if __name__ == '__main__':
 	main()
